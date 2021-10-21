@@ -1,0 +1,13 @@
+{% extends 'flatpages/default.html' %} 
+
+{% load custom_filters %}
+
+{% block title %}
+Статья
+{% endblock title %}
+
+{% block content %}
+<h1>{{ new.title | cenzor }}</h1>
+<div>{{ new.text | cenzor }}</div>
+<p>{{ new.dateCreation |date:'d M Y h:m'}}</p>
+{% endblock content %}
