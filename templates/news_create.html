@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %} 
+
+{% load custom_filters %}
+
+{% block title %}
+Статья
+{% endblock title %}
+
+{% block content %}
+<h2>Добавление новости</h2>
+<form method="POST">
+    {% csrf_token %} 
+    {{ form }} 
+    <input type="submit" value="Добавить товар">
+</form>
+
+{% endblock content %}

@@ -19,10 +19,6 @@ class Author(models.Model):
         self.ratingAuthor = pRat *3
         self.save()
 
-        
-
-        
-
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -52,6 +48,12 @@ class Post(models.Model):
 
     def preview(self):
         return self.text[0:124] + '. . .'
+
+    def __str__(self):
+        return f'{self.name} {self.quantity}'
+ 
+    def get_absolute_url(self): 
+        return f'/news/{self.id}' 
 
 
 

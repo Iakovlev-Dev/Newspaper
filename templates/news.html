@@ -7,8 +7,10 @@ News list
 {% endblock title %}
 
 {% block content %}
+
     <h2>Список новостей</h2>
     <h4>Всего новостей: {{ news|length }} </h4>
+    
     {% if news %}
     <table>
         <tr>
@@ -21,20 +23,61 @@ News list
             <td>
                 <h3> Статья</h3>
             </td>
+            <td>
+                <h3>Изменить</h3>
+            </td>
         </tr>
         {% for new in news %}
             <tr>
                 <td>
-                    {{ new.title | cenzor}}
+                    <a href="{% url 'post' new.id %}">{{ new.title | cenzor}}</a>
+                    
                 </td>
+               
                 <td>
                     {{ new.dateCreation }}
                 </td>
                 <td>
                     {{ new.text|truncatechars:20 | cenzor}}
                 </td>
-        {% endfor %}        
+                <td>
+                    <a href="{% url 'post_update' new.id %}"><u>Редактировать</u></a>
+                    <a href="{% url 'post_delete' new.id %}"><u>Удалить</u></a>      
+                </td>
+        {% endfor %}
+    </table>
+    <hr>
+    <a href="{% url 'news_create' %}">Добавить новую запись</a> <br>
+    <hr>
+
+    <hr>
+    <a href="{% url 'search' %}">Поиск новостей</a> <br>
+    <hr>
+
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="?page=1">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a>{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">>>></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    {% endif %}
+
         {% else %}
             <h2>Новостей пока нет</h2>
     {% endif %}
+
+   
+
 {% endblock content %}
