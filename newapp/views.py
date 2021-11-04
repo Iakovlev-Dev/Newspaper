@@ -8,6 +8,12 @@ from datetime import datetime
 from .filters import PostFilter
 from .forms import PostForm
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
+
+from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
 
 class PostList(ListView):
     model = Post
@@ -50,12 +56,14 @@ class Search(ListView):
         context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())  
         return context
 
-class PostCreateView(CreateView):
+class PostCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = ('newapp.add_post',)
     template_name = 'news_create.html'
     form_class = PostForm
     success_url = '/news/'
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = ('newapp.change_post',)
     template_name = 'news_create.html'
     form_class = PostForm
 
@@ -63,7 +71,13 @@ class PostUpdateView(UpdateView):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = ('newapp.delete_post',)
     template_name = 'news_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+
+class ProtectedView(LoginRequiredMixin, TemplateView):
+    template_name = 'prodected_page.html'
+
+    

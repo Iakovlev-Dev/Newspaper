@@ -23,18 +23,18 @@ News list
             </td>
         </tr>
     </thead>
-        <td>
-            {{ new.title | cenzor}}
-        </td>
-       <td>
-            {{ new.dateCreation }}
-        </td>
-        <td>
-            {{ new.text|truncatechars:20 | cenzor}}
-        </td>
-    </table>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="submit" value="удалить">
-    </form>      
+     <td>
+        {{ new.title | cenzor}}
+    </td>
+    <td>
+        {{ new.dateCreation }}
+    </td>
+    <td>
+        {{ new.text|truncatechars:20 | cenzor}}
+    </td>
+</table>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="удалить">
+</form>      
 {% endblock content %} 
